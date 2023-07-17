@@ -1,0 +1,84 @@
+* {
+  font-family: monospace;
+  font-size: 42px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgb(32, 32, 32);
+  color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#container,
+#display {
+  display: flex;
+  width: 380px;
+}
+
+#container {
+  background-color: black;
+  flex-direction: column;
+  border-radius: 40px;
+  height: 576px;
+}
+
+#display {
+  justify-content: right;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px;
+  height: 120px;
+  font-size: 56px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: self-end;
+  flex-wrap: wrap;
+}
+
+.func-button,
+.operator,
+.number {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  margin: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.func-button:hover,
+.operator:hover,
+.number:hover {
+  cursor: pointer;
+}
+
+.number {
+  background-color: rgb(32, 32, 32);
+}
+
+.number#zero {
+  width: 168px;
+  border-radius: 40px;
+  justify-content: left;
+  padding-left: 32px;
+}
+
+.func-button {
+  color: black;
+  background-color: gray;
+}
+
+.operator {
+  background-color: darkcyan;
+}
