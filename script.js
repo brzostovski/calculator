@@ -14,3 +14,16 @@ OPERATOR_KEYS.forEach(button => {
     button.classList.add('active');
   })
 })
+
+NUMBER_KEYS.forEach(button => {
+  button.addEventListener('click', () => {
+    if (DISPLAY.classList.contains('result')) {
+      DISPLAY.classList.remove('result');
+      DISPLAY.textContent = button.textContent;
+    } else if (DISPLAY.textContent.length > 9) {
+      return;
+    } else {
+      DISPLAY.textContent += button.textContent;
+    }
+  })
+})
