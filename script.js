@@ -23,11 +23,11 @@ function clearEverything() {
 
 OPERATOR_KEYS.forEach(button => {
   button.addEventListener('click', () => {
+    deactivateOperators();
+    
     if (button.id !== 'equals') button.classList.add('active');
     operatorClicked = true;
     let currentDisplay = parseInt(DISPLAY.textContent);
-
-    deactivateOperators();
     
     if (memory === undefined) {
       memory = currentDisplay;
