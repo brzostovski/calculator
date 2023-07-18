@@ -12,12 +12,23 @@ function deactivateOperators() {
   OPERATOR_KEYS.forEach(button => button.classList.remove('active'));
 }
 
+function clearEverything() {
+  DISPLAY.textContent = '0';
+  DISPLAY.classList.add('result');
+  memory = undefined;
+  operator = undefined;
+  operatorClicked = false;
+  deactivateOperators();
+}
+
 OPERATOR_KEYS.forEach(button => {
   button.addEventListener('click', () => {
-    deactivateOperators();
     if (button.id !== 'equals') button.classList.add('active');
     operatorClicked = true;
     let currentDisplay = parseInt(DISPLAY.textContent);
+
+    deactivateOperators();
+    
     if (memory === undefined) {
       memory = currentDisplay;
     } else if (operator === undefined) {
@@ -46,11 +57,4 @@ NUMBER_KEYS.forEach(button => {
   })
 })
 
-AC.addEventListener('click', () => {
-  DISPLAY.textContent = '0';
-  DISPLAY.classList.add('result');
-  memory = undefined;
-  operator = undefined;
-  operatorClicked = false;
-  deactivateOperators();
-})
+AC.addEventListener('click', () => clearEverything());
