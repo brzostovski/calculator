@@ -52,7 +52,6 @@ body {
   align-items: center;
   height: 80px;
   border-radius: 40px;
-  transition-duration: 0.05s;
 }
 
 .func-button:hover,
@@ -62,14 +61,20 @@ body {
 }
 
 .func-button:active,
-.operator:active,
-.number:active {
+.operator:active {
   opacity: 0.8;
-  transform: scale(0.95);
+  transition-duration: 0.1s;
+}
+
+.number:active {
+  transition-duration: 0.05s;
+  color: rgb(32, 32, 32);
+  background-color: antiquewhite;
 }
 
 .number {
   background-color: rgb(32, 32, 32);
+  transition-duration: 0.5s;
 }
 
 .number#zero {
@@ -85,4 +90,9 @@ body {
 
 .operator {
   background-color: darkcyan;
+}
+
+.operator.active {
+  color: darkcyan;
+  background-color: darkgray;
 }
