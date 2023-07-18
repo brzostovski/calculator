@@ -49,5 +49,8 @@ NUMBER_KEYS.forEach(button => {
 AC.addEventListener('click', () => {
   DISPLAY.textContent = '0';
   DISPLAY.classList.add('result');
+  memory = undefined;
+  operator = undefined;
+  operatorClicked = false;
   deactivateOperators();
 })
