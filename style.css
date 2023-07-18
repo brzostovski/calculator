@@ -55,12 +55,20 @@ body {
   margin: 4px;
   border-radius: 50%;
   flex-shrink: 0;
+  transition-duration: 0.05s;
 }
 
 .func-button:hover,
 .operator:hover,
 .number:hover {
   cursor: pointer;
+}
+
+.func-button:active,
+.operator:active,
+.number:active {
+  opacity: 0.8;
+  transform: scale(0.95);
 }
 
 .number {
