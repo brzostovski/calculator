@@ -23,8 +23,9 @@ body {
 #container {
   background-color: black;
   flex-direction: column;
-  border-radius: 40px;
+  border-radius: 50px;
   height: 576px;
+  border: solid antiquewhite 2px;
 }
 
 #display {
@@ -66,15 +67,15 @@ body {
   transition-duration: 0.1s;
 }
 
+.number {
+  background-color: rgb(32, 32, 32);
+  transition-duration: 0.5s;
+}
+
 .number:active {
   transition-duration: 0.05s;
   color: rgb(32, 32, 32);
   background-color: antiquewhite;
-}
-
-.number {
-  background-color: rgb(32, 32, 32);
-  transition-duration: 0.5s;
 }
 
 .number#zero {
@@ -93,6 +94,16 @@ body {
 }
 
 .operator.active {
+  color: darkcyan;
+  background-color: darkgray;
+}
+
+.operator#equals {
+  transition-duration: 0.5s;
+}
+
+.operator#equals:active {
+  transition-duration: 0.05s;
   color: darkcyan;
   background-color: darkgray;
 }
