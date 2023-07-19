@@ -139,4 +139,6 @@ NUMBER_KEYS.forEach(button => {
 
 AC.addEventListener('click', () => clearEverything());
 
-SIGN_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * -1))
+SIGN_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * -1));
+
+PERCENT_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * 100));
