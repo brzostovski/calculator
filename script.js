@@ -127,7 +127,8 @@ NUMBER_KEYS.forEach(button => {
   button.addEventListener('click', () => {
     repeatedEquals = false;
     if (button.id === 'decimal') {
-      return;
+      if (DISPLAY.textContent.includes('.')) return;
+      DISPLAY.textContent += button.textContent;
     } else if (DISPLAY.classList.contains('result')) {
       clearEverything();
       DISPLAY.classList.remove('result');
