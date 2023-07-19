@@ -58,8 +58,14 @@ function otherOperatorActive(clickedOperator) {
 function cropResult(displayContent) {
   if ((displayContent === NaN) || (isNaN(displayContent) === true)) return 'Error';
 
-  let displayValue = Number(displayContent);
   let displayText = displayContent.toString();
+
+  if (displayText.includes('.')) {
+    displayContent = Math.round(displayContent * 10_000_000_000) / 10_000_000_000;
+    displayText = displayContent.toString();
+  }
+
+  let displayValue = Number(displayContent);
 
   if (displayText.includes('e-')) return 0;
   if ((displayText.length > 9) || (displayValue > 9_999_999_999)) {
