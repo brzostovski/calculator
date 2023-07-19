@@ -56,17 +56,20 @@ function otherOperatorActive(clickedOperator) {
 }
 
 function cropResult(displayContent) {
-  if (displayContent === 'Error') return displayContent;
+  if ((displayContent === NaN) || (isNaN(displayContent) === true)) return 'Error';
+
   let displayValue = Number(displayContent);
   let displayText = displayContent.toString();
-  if (displayText.length > 9) {
-    if (displayText.includes('e-')) return 0;
-    if (displayValue >= 9999999999) {
+
+  if (displayText.includes('e-')) return 0;
+  if ((displayText.length > 9) || (displayValue > 9_999_999_999)) {
+    if (displayValue > 9_999_999_999) {
+      if (!DISPLAY.classList.contains('result')) return Number(displayText.slice(0, 10));
       if (displayValue > 1e100) return 'Error';
+
       return displayValue.toExponential(2);
     }
-    console.log('TOO LONG');
-    return displayText.slice(0, 10);
+    return Number(displayText.slice(0, 10));
   } else {
     return displayValue;
   }
