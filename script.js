@@ -15,7 +15,6 @@ function operation (operator, a, b) {
   switch (operator) {
     case 'divide':
       if (b === 0) {
-        clearEverything();
         return 'Error';
       }
       return a / b;
@@ -54,6 +53,23 @@ function otherOperatorActive(clickedOperator) {
   })
 }
 
+function cropResult(displayContent) {
+  if (displayContent === 'Error') return displayContent;
+  let displayValue = Number(displayContent);
+  let displayText = displayContent.toString();
+  if (displayText.length > 9) {
+    if (displayText.includes('e-')) return 0;
+    if (displayValue >= 9999999999) {
+      if (displayValue > 1e100) return 'Error';
+      return displayValue.toExponential(2);
+    }
+    console.log('TOO LONG');
+    return displayText.slice(0, 10);
+  } else {
+    return displayValue;
+  }
+}
+
 OPERATOR_KEYS.forEach(button => {
   button.addEventListener('click', () => {
     if (otherOperatorActive(button) === true) return;
@@ -61,7 +77,7 @@ OPERATOR_KEYS.forEach(button => {
     deactivateOperators();
 
     operatorClicked = true;
-    let currentDisplay = parseInt(DISPLAY.textContent);
+    let currentDisplay = parseFloat(DISPLAY.textContent);
     let currentOperator = button.id;
 
     if ((button.id === 'equals') && (memory === undefined)) {
@@ -83,7 +99,7 @@ OPERATOR_KEYS.forEach(button => {
           operationResult = operation(operator, currentDisplay, valueBeforeRepeatedEquals);
         }
         DISPLAY.classList.add('result');
-        DISPLAY.textContent = operationResult;
+        DISPLAY.textContent = cropResult(operationResult);
         repeatedEquals = true;
       } else if (DISPLAY.classList.contains('result')) {
         button.classList.add('active');
@@ -95,7 +111,7 @@ OPERATOR_KEYS.forEach(button => {
         button.classList.add('active');
         operator = currentOperator;
         memory = operationResult;
-        DISPLAY.textContent = operationResult;
+        DISPLAY.textContent = cropResult(operationResult);
         repeatedEquals = false;
       }
     }
@@ -109,14 +125,12 @@ NUMBER_KEYS.forEach(button => {
       clearEverything();
       DISPLAY.classList.remove('result');
       DISPLAY.textContent = button.textContent;
-    } else if (DISPLAY.textContent.length > 9) {
-      return;
     } else if ((DISPLAY.textContent === '0') || (operatorClicked === true)) {
       DISPLAY.textContent = button.textContent;
       operatorClicked = false;
       deactivateOperators();
     } else {
-      DISPLAY.textContent += button.textContent;
+      DISPLAY.textContent = cropResult(DISPLAY.textContent + button.textContent);
     }
   })
 })
