@@ -8,6 +8,8 @@ const EQUALS_KEY = document.querySelector('#equals');
 let memory;
 let operator;
 let operatorClicked = false;
+let repeatedEquals = false;
+let valueBeforeRepeatedEquals;
 
 function operation (operator, a, b) {
   switch (operator) {
@@ -73,27 +75,36 @@ OPERATOR_KEYS.forEach(button => {
       let operationResult = operation(operator, memory, currentDisplay);
 
       if (currentOperator === 'equals') {
-        if (!DISPLAY.classList.contains('result')) memory = currentDisplay;
+        if ((!DISPLAY.classList.contains('result'))
+        && (repeatedEquals === false)) {
+          memory = currentDisplay;
+          valueBeforeRepeatedEquals = currentDisplay;
+        } else if (repeatedEquals === true) {
+          operationResult = operation(operator, currentDisplay, valueBeforeRepeatedEquals);
+        }
         DISPLAY.classList.add('result');
+        DISPLAY.textContent = operationResult;
+        repeatedEquals = true;
       } else if (DISPLAY.classList.contains('result')) {
         button.classList.add('active');
         DISPLAY.classList.remove('result');
         operator = currentOperator;
         memory = currentDisplay;
-        return;
+        repeatedEquals = false;
       } else {
         button.classList.add('active');
         operator = currentOperator;
         memory = operationResult;
+        DISPLAY.textContent = operationResult;
+        repeatedEquals = false;
       }
-
-      DISPLAY.textContent = operationResult;
     }
   })
 })
 
 NUMBER_KEYS.forEach(button => {
   button.addEventListener('click', () => {
+    repeatedEquals = false;
     if (DISPLAY.classList.contains('result')) {
       clearEverything();
       DISPLAY.classList.remove('result');
