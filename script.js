@@ -3,6 +3,8 @@ const OPERATOR_KEYS = document.querySelectorAll('.operator');
 const FUNC_KEYS = document.querySelectorAll('.func-button');
 const DISPLAY = document.querySelector('#display');
 const AC = document.querySelector('#AC');
+const SIGN_KEY = document.querySelector('#sign');
+const PERCENT_KEY = document.querySelector('#percent');
 const EQUALS_KEY = document.querySelector('#equals');
 
 let memory;
@@ -136,3 +138,5 @@ NUMBER_KEYS.forEach(button => {
 })
 
 AC.addEventListener('click', () => clearEverything());
+
+SIGN_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * -1))
