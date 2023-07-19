@@ -123,7 +123,9 @@ OPERATOR_KEYS.forEach(button => {
 NUMBER_KEYS.forEach(button => {
   button.addEventListener('click', () => {
     repeatedEquals = false;
-    if (DISPLAY.classList.contains('result')) {
+    if (button.id === 'decimal') {
+      return;
+    } else if (DISPLAY.classList.contains('result')) {
       clearEverything();
       DISPLAY.classList.remove('result');
       DISPLAY.textContent = button.textContent;
