@@ -13,7 +13,7 @@ let operatorClicked = false;
 let repeatedEquals = false;
 let valueBeforeRepeatedEquals;
 
-function operation (operator, a, b) {
+function operation(operator, a, b) {
   switch (operator) {
     case 'divide':
       if (b === 0) {
@@ -55,19 +55,24 @@ function otherOperatorActive(clickedOperator) {
   })
 }
 
+function roundToDecimal(value, precision) {
+  return Math.round(value * 10**precision) / 10**precision;
+}
+
 function cropResult(displayContent) {
   if ((displayContent === NaN) || (isNaN(displayContent) === true)) return 'Error';
 
   let displayText = displayContent.toString();
 
   if (displayText.includes('.')) {
-    displayContent = Math.round(displayContent * 10_000_000_000) / 10_000_000_000;
+    displayContent = roundToDecimal(displayContent, 10);
     displayText = displayContent.toString();
   }
 
   let displayValue = Number(displayContent);
 
   if (displayText.includes('e-')) return 0;
+
   if ((displayText.length > 9) || (displayValue > 9_999_999_999)) {
     if (displayValue > 9_999_999_999) {
       if (!DISPLAY.classList.contains('result')) return Number(displayText.slice(0, 10));
@@ -81,72 +86,76 @@ function cropResult(displayContent) {
   }
 }
 
-OPERATOR_KEYS.forEach(button => {
-  button.addEventListener('click', () => {
-    if (otherOperatorActive(button) === true) return;
+function operatorKeyAction(button) {
+  if (otherOperatorActive(button) === true) return;
 
-    deactivateOperators();
+  deactivateOperators();
 
-    operatorClicked = true;
-    let currentDisplay = parseFloat(DISPLAY.textContent);
-    let currentOperator = button.id;
+  operatorClicked = true;
+  let currentDisplay = parseFloat(DISPLAY.textContent);
+  let currentOperator = button.id;
 
-    if ((button.id === 'equals') && (memory === undefined)) {
-      return;
-    } else if ((memory === undefined) || (operator === undefined)) {
-      if (currentOperator === 'equals') return;
-      button.classList.add('active');
-      memory = currentDisplay;
-      operator = button.id;
-    } else {
-      let operationResult = operation(operator, memory, currentDisplay);
+  if ((button.id === 'equals') && (memory === undefined)) {
+    return;
+  } else if ((memory === undefined) || (operator === undefined)) {
+    if (currentOperator === 'equals') return;
+    button.classList.add('active');
+    memory = currentDisplay;
+    operator = button.id;
+  } else {
+    let operationResult = operation(operator, memory, currentDisplay);
 
-      if (currentOperator === 'equals') {
-        if ((!DISPLAY.classList.contains('result'))
-        && (repeatedEquals === false)) {
-          memory = currentDisplay;
-          valueBeforeRepeatedEquals = currentDisplay;
-        } else if (repeatedEquals === true) {
-          operationResult = operation(operator, currentDisplay, valueBeforeRepeatedEquals);
-        }
-        DISPLAY.classList.add('result');
-        DISPLAY.textContent = cropResult(operationResult);
-        repeatedEquals = true;
-      } else if (DISPLAY.classList.contains('result')) {
-        button.classList.add('active');
-        DISPLAY.classList.remove('result');
-        operator = currentOperator;
+    if (currentOperator === 'equals') {
+      if ((!DISPLAY.classList.contains('result'))
+      && (repeatedEquals === false)) {
         memory = currentDisplay;
-        repeatedEquals = false;
-      } else {
-        button.classList.add('active');
-        operator = currentOperator;
-        memory = operationResult;
-        DISPLAY.textContent = cropResult(operationResult);
-        repeatedEquals = false;
+        valueBeforeRepeatedEquals = currentDisplay;
+      } else if (repeatedEquals === true) {
+        operationResult = operation(operator, currentDisplay, valueBeforeRepeatedEquals);
       }
+      DISPLAY.classList.add('result');
+      DISPLAY.textContent = cropResult(operationResult);
+      repeatedEquals = true;
+    } else if (DISPLAY.classList.contains('result')) {
+      button.classList.add('active');
+      DISPLAY.classList.remove('result');
+      operator = currentOperator;
+      memory = currentDisplay;
+      repeatedEquals = false;
+    } else {
+      button.classList.add('active');
+      operator = currentOperator;
+      memory = operationResult;
+      DISPLAY.textContent = cropResult(operationResult);
+      repeatedEquals = false;
     }
-  })
+  }
+}
+
+function numberKeyAction(button) {
+  repeatedEquals = false;
+  if (button.id === 'decimal') {
+    if (DISPLAY.textContent.includes('.')) return;
+    DISPLAY.textContent += button.textContent;
+  } else if (DISPLAY.classList.contains('result')) {
+    clearEverything();
+    DISPLAY.classList.remove('result');
+    DISPLAY.textContent = button.textContent;
+  } else if ((DISPLAY.textContent === '0') || (operatorClicked === true)) {
+    DISPLAY.textContent = button.textContent;
+    operatorClicked = false;
+    deactivateOperators();
+  } else {
+    DISPLAY.textContent = cropResult(DISPLAY.textContent + button.textContent);
+  }
+}
+
+OPERATOR_KEYS.forEach(button => {
+  button.addEventListener('click', () => operatorKeyAction(button))
 })
 
 NUMBER_KEYS.forEach(button => {
-  button.addEventListener('click', () => {
-    repeatedEquals = false;
-    if (button.id === 'decimal') {
-      if (DISPLAY.textContent.includes('.')) return;
-      DISPLAY.textContent += button.textContent;
-    } else if (DISPLAY.classList.contains('result')) {
-      clearEverything();
-      DISPLAY.classList.remove('result');
-      DISPLAY.textContent = button.textContent;
-    } else if ((DISPLAY.textContent === '0') || (operatorClicked === true)) {
-      DISPLAY.textContent = button.textContent;
-      operatorClicked = false;
-      deactivateOperators();
-    } else {
-      DISPLAY.textContent = cropResult(DISPLAY.textContent + button.textContent);
-    }
-  })
+  button.addEventListener('click', () => numberKeyAction(button))
 })
 
 AC.addEventListener('click', () => clearEverything());
