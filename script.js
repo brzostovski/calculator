@@ -101,7 +101,9 @@ function operatorKeyAction(button) {
   if ((button.id === 'equals') && (memory === undefined)) {
     return;
   } else if ((memory === undefined) || (operator === undefined)) {
+
     if (currentOperator === 'equals') return;
+
     button.classList.add('active');
     memory = currentDisplay;
     operator = button.id;
@@ -116,6 +118,7 @@ function operatorKeyAction(button) {
       } else if (repeatedEquals === true) {
         operationResult = operation(operator, currentDisplay, valueBeforeRepeatedEquals);
       }
+
       DISPLAY.classList.add('result');
       DISPLAY.textContent = cropResult(operationResult);
       repeatedEquals = true;
@@ -137,8 +140,10 @@ function operatorKeyAction(button) {
 
 function numberKeyAction(button) {
   repeatedEquals = false;
+
   if (button.id === 'decimal') {
     if (DISPLAY.textContent.includes('.')) return;
+    
     DISPLAY.textContent += button.textContent;
   } else if (DISPLAY.classList.contains('result')) {
     clearEverything();
@@ -163,9 +168,9 @@ function switchToPercent(value) {
 
 function keyboardInputAction(e) {
   if (!VALID_KEYS.includes(e.key)) return;
-  console.log(e.key);
+
   const key = document.querySelector(`[key="${e.key}"]`);
-  console.log(key);
+
   if (e.key === 'Escape') {
     clearEverything();
   } else if (e.key === 'Enter') {
