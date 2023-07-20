@@ -150,6 +150,14 @@ function numberKeyAction(button) {
   }
 }
 
+function switchSign(value) {
+  return cropResult(parseFloat(value) * -1);
+}
+
+function switchToPercent(value) {
+  return cropResult(parseFloat(DISPLAY.textContent) * 100);
+}
+
 OPERATOR_KEYS.forEach(button => {
   button.addEventListener('click', () => operatorKeyAction(button))
 })
@@ -160,6 +168,6 @@ NUMBER_KEYS.forEach(button => {
 
 AC.addEventListener('click', () => clearEverything());
 
-SIGN_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * -1));
+SIGN_KEY.addEventListener('click', () => DISPLAY.textContent = switchSign(DISPLAY.textContent));
 
-PERCENT_KEY.addEventListener('click', () => DISPLAY.textContent = cropResult(parseFloat(DISPLAY.textContent) * 100));
+PERCENT_KEY.addEventListener('click', () => DISPLAY.textContent = switchToPercent(DISPLAY.textContent));
