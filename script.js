@@ -7,6 +7,9 @@ const SIGN_KEY = document.querySelector('#sign');
 const PERCENT_KEY = document.querySelector('#percent');
 const EQUALS_KEY = document.querySelector('#equals');
 
+const VALID_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                    'Escape', 'Enter', '/', '*', '-', '+', '=', '.',];
+
 let memory;
 let operator;
 let operatorClicked = false;
@@ -159,13 +162,26 @@ function switchToPercent(value) {
 }
 
 function keyboardInputAction(e) {
-  console.log(e.code);
-  const key = document.querySelector(`[code=${e.code}]`);
+  if (!VALID_KEYS.includes(e.key)) return;
+  console.log(e.key);
+  const key = document.querySelector(`[key="${e.key}"]`);
   console.log(key);
-  if (e.code === 'Escape') {
-  clearEverything();
+  if (e.key === 'Escape') {
+    clearEverything();
+  } else if (e.key === 'Enter') {
+    operatorKeyAction(document.querySelector('#equals'));
+  } else if (e.key === '%') {
+    DISPLAY.textContent = switchToPercent(DISPLAY.textContent);
+    return;
+  } else if ((e.key === '/') || (e.key === '*') || (e.key === '-') ||
+             (e.key === '+') || (e.key === '=')) {
+    operatorKeyAction(key);
+    return;
   } else if (key.classList.contains('number')) {
     numberKeyAction(key);
+    return;
+  } else {
+    return console.log('something went wrong');
   }
 }
 
@@ -180,11 +196,11 @@ NUMBER_KEYS.forEach(button => {
 AC.addEventListener('click', () => clearEverything());
 
 SIGN_KEY.addEventListener('click', () => {
-  DISPLAY.textContent = switchSign(DISPLAY.textContent)
+  DISPLAY.textContent = switchSign(DISPLAY.textContent);
 })
 
 PERCENT_KEY.addEventListener('click', () => {
-  DISPLAY.textContent = switchToPercent(DISPLAY.textContent)
+  DISPLAY.textContent = switchToPercent(DISPLAY.textContent);
 })
 
 window.addEventListener('keydown', keyboardInputAction);
