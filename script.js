@@ -158,6 +158,17 @@ function switchToPercent(value) {
   return cropResult(parseFloat(value) * 100);
 }
 
+function keyboardInputAction(e) {
+  console.log(e.code);
+  const key = document.querySelector(`[code=${e.code}]`);
+  console.log(key);
+  if (e.code === 'Escape') {
+  clearEverything();
+  } else if (key.classList.contains('number')) {
+    numberKeyAction(key);
+  }
+}
+
 OPERATOR_KEYS.forEach(button => {
   button.addEventListener('click', () => operatorKeyAction(button))
 })
@@ -176,4 +187,4 @@ PERCENT_KEY.addEventListener('click', () => {
   DISPLAY.textContent = switchToPercent(DISPLAY.textContent)
 })
 
-window.addEventListener('keydown', keyboardInputAction());
+window.addEventListener('keydown', keyboardInputAction);
