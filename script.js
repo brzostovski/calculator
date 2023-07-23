@@ -8,7 +8,7 @@ const PERCENT_KEY = document.querySelector('#percent');
 const EQUALS_KEY = document.querySelector('#equals');
 
 const VALID_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-                    'Escape', 'Enter', '/', '*', '-', '+', '=', '.',];
+                    'Backspace', 'Escape', 'Enter', '/', '*', '-', '+', '=', '.',];
 
 let memory;
 let operator;
@@ -166,9 +166,24 @@ function switchToPercent(value) {
   return cropResult(parseFloat(value) * 100);
 }
 
+function deleteLastChar() {
+  let displayText = DISPLAY.textContent.toString();
+  displayText = displayText.slice(0, (displayText.length - 1));
+  if (displayText.length === 0) {
+    DISPLAY.textContent = 0;
+  } else {
+    DISPLAY.textContent = cropResult(displayText);
+  }
+}
+
 function keyboardInputAction(e) {
   if (!VALID_KEYS.includes(e.key)) return;
 
+  if (e.key === 'Backspace') {
+    deleteLastChar();
+    return;
+  }
+  
   const key = document.querySelector(`[key="${e.key}"]`);
 
   if (e.key === 'Escape') {
@@ -177,14 +192,11 @@ function keyboardInputAction(e) {
     operatorKeyAction(document.querySelector('#equals'));
   } else if (e.key === '%') {
     DISPLAY.textContent = switchToPercent(DISPLAY.textContent);
-    return;
   } else if ((e.key === '/') || (e.key === '*') || (e.key === '-') ||
              (e.key === '+') || (e.key === '=')) {
     operatorKeyAction(key);
-    return;
   } else if (key.classList.contains('number')) {
     numberKeyAction(key);
-    return;
   } else {
     return console.log('something went wrong');
   }
